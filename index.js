@@ -17,3 +17,18 @@
 
 // console.log(data);
 // console.log(reverseData);
+
+//Fruit data
+let fruit = [
+    ['Apple',15,8.5],
+    ['Grape',8,11],
+    ['Orange',12,6.9]
+]
+
+let remove = 'Grape'
+let index = fruit[1].indexOf(remove)
+
+console.log(fruit);
+
+fruit.splice(0,1)
+console.log(fruit);
