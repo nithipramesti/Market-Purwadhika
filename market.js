@@ -137,6 +137,11 @@ while(true){
                     }
                 }
 
+                //Empty the cart
+                for(let i=0; i<fruit.length; i++){
+                    cart[i]=0
+                }
+
                 break
             }
         }
