@@ -8,10 +8,6 @@ let fruit = [
 //Cart 
 let cart = [0,0,0]
 
-//Search var
-let fruitFound = 0
-let fruitIndex 
-
 
 
 //APP
