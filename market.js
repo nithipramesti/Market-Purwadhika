@@ -1,16 +1,24 @@
 //Fruit data
-let fruit = [
-  //[fruit, stock, price, cart]
-  ["Apple", 15, 8.5, 0],
-  ["Grape", 8, 11, 0],
-  ["Orange", 12, 6.9, 0],
+// let fruit = [
+//   //[fruit, stock, price, cart]
+//   ["Apple", 15, 8.5, 0],
+//   ["Grape", 8, 11, 0],
+//   ["Orange", 12, 6.9, 0],
+// ];
+
+const fruit = [
+  { name: "Apple", stock: 15, price: 8.5, cart: 0 },
+  { name: "Grape", stock: 8, price: 11, cart: 0 },
+  { name: "Orange", stock: 12, price: 7, cart: 0 },
 ];
 
 //Display cart function
 let fruitDisplay = () => {
   let display = "";
   fruit.forEach((val, idx) => {
-    display += `${idx + 1}. ${val[0]} ($${val[2]} | Stock: ${val[1]})\n`;
+    display += `${idx + 1}. ${val.name} ($${val.price} | Stock: ${
+      val.stock
+    })\n`;
   });
   return display;
 };
@@ -32,12 +40,12 @@ while (true) {
     let newFruitPrice = prompt("How much the price of the fruit?");
 
     //Insert new fruit to array
-    let newFruit = [
-      newFruitName,
-      Number(newFruitStock),
-      Number(newFruitPrice),
-      0,
-    ];
+    let newFruit = {
+      name: newFruitName,
+      stock: Number(newFruitStock),
+      price: Number(newFruitPrice),
+      cart: 0,
+    };
     fruit.push(newFruit);
 
     //Displaying fruit list
@@ -45,18 +53,37 @@ while (true) {
   } else if (mainMenu == 3) {
     //User insert what fruit to remove
     let removeFruit = prompt(
-      `What fruit do you want to remove? \n${fruitDisplay()}`
+      `What fruit do you want to remove? \n${fruitDisplay()}${
+        fruit.length + 1
+      }. Back`
     );
 
     //Remove fruit from array
-    if (removeFruit <= fruit.length) {
-      fruit.splice(removeFruit - 1, 1);
-    } else {
-      alert(`There's no such a fruit!`);
-    }
+    while (true) {
+      if (removeFruit <= fruit.length) {
+        //Make sure
+        let makeSure = prompt(
+          `Are you sure you want to remove '${
+            fruit[removeFruit - 1].name
+          }'? \n1.Yes 2.No`
+        );
+        if (makeSure == 2) {
+          break;
+        }
 
-    //Displaying fruit list
-    alert(`FRUIT LIST\n \n${fruitDisplay()}`);
+        //remove fruit
+        fruit.splice(removeFruit - 1, 1);
+
+        //Displaying fruit list
+        alert(`FRUIT LIST\n \n${fruitDisplay()}`);
+        break;
+      } else if (removeFruit == fruit.length + 1) {
+        break; //go back to main menu
+      } else {
+        alert(`There's no such a fruit!`);
+        break; //wrong input
+      }
+    }
   } else if (mainMenu == 4) {
     while (true) {
       //Ask user to select what fruit they want to buy
@@ -67,20 +94,20 @@ while (true) {
       //Ask user how many they want to buy, and adding it to cart
       while (true) {
         let quantity = 0;
-        quantity = Number(prompt("How many would you like to buy?"));
+        quantity = Number(prompt("How many fruits would you like to buy?"));
 
         //Check for the stock
-        if (fruit[fruitSelect - 1][1] - quantity < 0) {
+        if (fruit[fruitSelect - 1].stock - quantity < 0) {
           //If user insert more than stock
           alert(
             `The stock currently is ${
-              fruit[fruitSelect - 1][1]
+              fruit[fruitSelect - 1].stock
             }, please insert new quantity.`
           );
         } else {
           //If payment correct
-          fruit[fruitSelect - 1][3] += quantity; //update cart
-          fruit[fruitSelect - 1][1] -= quantity; //update stock
+          fruit[fruitSelect - 1].cart += quantity; //update cart
+          fruit[fruitSelect - 1].stock -= quantity; //update stock
           break;
         }
       }
@@ -88,9 +115,9 @@ while (true) {
       //Loop for displaying cart items
       let cartItems = "";
       fruit.forEach((val) => {
-        if (val[3] != 0) {
-          cartItems += `${val[0]}: ${val[3]} x $${val[2]} = $${
-            val[3] * val[2]
+        if (val.cart != 0) {
+          cartItems += `${val.name}: ${val.cart} x $${val.price} = $${
+            val.cart * val.price
           }\n`;
         }
       });
@@ -103,7 +130,7 @@ while (true) {
       //Loop for calculate the total payment
       let totalPayment = 0;
       fruit.forEach((val) => {
-        totalPayment += val[3] * val[2];
+        totalPayment += val.cart * val.price;
       });
 
       if (nextStep == 2) {
@@ -132,7 +159,7 @@ while (true) {
 
         //Empty the cart
         fruit.forEach((val) => {
-          val[3] = 0;
+          val.cart = 0;
         });
 
         break;
